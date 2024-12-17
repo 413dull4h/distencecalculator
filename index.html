@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор расстояния</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .calculator {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .calculator h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .calculate-btn,
+        .photo-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .calculate-btn:hover,
+        .photo-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <h1>Калькулятор расстояния</h1>
+        <div class="input-group">
+            <label for="case1">Случай 1 (x1, y1, x2, y2):</label>
+            <input type="text" id="case1" placeholder="Введите x1,y1,x2,y2">
+        </div>
+        <div class="input-group">
+            <label for="case2">Случай 2 (x1, y1, x2, y2):</label>
+            <input type="text" id="case2" placeholder="Введите x1,y1,x2,y2">
+        </div>
+        <div class="input-group">
+            <label for="case3">Случай 3 (x1, y1, x2, y2):</label>
+            <input type="text" id="case3" placeholder="Введите x1,y1,x2,y2">
+        </div>
+        <button class="calculate-btn" onclick="calculateDistance()">Рассчитать</button>
+        <div class="result" id="result"></div>
+        <button class="link-btn" onclick="openLink()">Открыть ссылку</button>
+
+    </div>
+
+    <script>
+function openLink() {
+  window.open("", "_blank");
+}
+
+
+        function calculateDistance() {
+            // Выбор вводимых данных для трех случаев
+            const case1 = document.getElementById('case1').value.trim();
+            const case2 = document.getElementById('case2').value.trim();
+            const case3 = document.getElementById('case3').value.trim();
+
+            // Разбор строки координат
+            function parseCoordinates(input) {
+                const parts = input.split(',').map(Number);
+                if (parts.length !== 4 || parts.some(isNaN)) {
+                    return null;
+                }
+                return parts; // Возвращает [x1, y1, x2, y2]
+            }
+
+            const coords1 = parseCoordinates(case1);
+            const coords2 = parseCoordinates(case2);
+            const coords3 = parseCoordinates(case3);
+
+            // Проверка валидности ввода
+            if (!coords1 && !coords2 && !coords3) {
+                document.getElementById('result').textContent = 'Пожалуйста, введите корректные координаты хотя бы для одного случая.';
+                return;
+            }
+
+            // Вычисление расстояний для каждого корректного случая
+            function calculate(coords) {
+                const [x1, y1, x2, y2] = coords;
+                return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)).toFixed(2);
+            }
+
+            let resultText = '';
+            if (coords1) resultText += `Случай 1: расстояние = ${calculate(coords1)}\n`;
+            if (coords2) resultText += `Случай 2: расстояние = ${calculate(coords2)}\n`;
+            if (coords3) resultText += `Случай 3: расстояние = ${calculate(coords3)}\n`;
+
+            document.getElementById('result').textContent = resultText.trim();
+        }
+
+        function openPhoto() {
+            const photoUrl = "https://via.placeholder.com/600"; // Замените на URL вашего изображения
+            window.open(photoUrl, "_blank");
+        }
+    </script>
+</body>
+
+</html>
